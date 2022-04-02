@@ -26,6 +26,15 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+bootJar {
+    enabled false
+}
+
+jar {
+    enabled true
+    archiveName "${project.name}.jar"
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
