@@ -1,11 +1,13 @@
 package ua.tunepoint.web.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ua.tunepoint.web.model.StatusResponse;
 
+@Slf4j
 @ControllerAdvice
 public class WebExceptionHandler {
 
@@ -31,6 +33,7 @@ public class WebExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StatusResponse> handleOther(Exception ex) {
+        log.error("Oops, internal error occurred", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(StatusResponse.builder().message(INTERNAL_ERROR_MESSAGE).status(HttpStatus.INTERNAL_SERVER_ERROR.value()).build());
     }
