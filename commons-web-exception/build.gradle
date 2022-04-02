@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+}
+
+
+dependencies {
+    implementation project(':commons-web-model')
+    implementation 'org.springframework:spring-web'
+
+    compileOnly 'org.projectlombok:lombok'
+
+    annotationProcessor 'org.projectlombok:lombok'
+}
+
+jar {
+    enabled true
+    archiveName "${project.name}.jar"
+}
+
+

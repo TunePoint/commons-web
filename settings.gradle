@@ -1,1 +1,4 @@
 rootProject.name = 'commons-web'
+
+include 'commons-web-model'
+include 'commons-web-exception'

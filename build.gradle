@@ -1,60 +1,60 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.6'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'maven-publish'
     id 'java'
 }
 
-group = 'ua.tunepoint'
-version = '0.0.1'
-sourceCompatibility = '17'
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
+allprojects {
+    group = 'ua.tunepoint'
+    version = '0.0.1'
+    sourceCompatibility = '17'
 }
 
-repositories {
-    mavenCentral()
-}
+subprojects {
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
+    apply plugin: 'maven-publish'
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: 'java-library'
 
-bootJar {
-    enabled false
-}
-
-jar {
-    enabled true
-    archiveName "${project.name}.jar"
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId project.group
-            artifactId project.name
-            version project.version
-
-            artifact jar
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
         }
     }
 
     repositories {
-        maven {
-            name  'reposilite'
-            url "http://${System.getenv('ARTIFACTORY_HOST')}/${System.getenv('ARTIFACTORY_REPOSITORY')}"
-            allowInsecureProtocol true
+        mavenCentral()
+    }
 
-            credentials {
-                username System.getenv('ARTIFACTORY_USERNAME')
-                password System.getenv('ARTIFACTORY_PASSWORD')
+    dependencyManagement {
+        dependencies {
+
+            dependency 'org.springframework:spring-web:5.3.18'
+            dependency 'org.projectlombok:lombok:1.18.22'
+
+        }
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                groupId project.group
+                artifactId project.name
+                version project.version
+
+                artifact jar
+            }
+        }
+
+        repositories {
+            maven {
+                name  'reposilite'
+                url "http://${System.getenv('ARTIFACTORY_HOST')}/${System.getenv('ARTIFACTORY_REPOSITORY')}"
+                allowInsecureProtocol true
+
+                credentials {
+                    username System.getenv('ARTIFACTORY_USERNAME')
+                    password System.getenv('ARTIFACTORY_PASSWORD')
+                }
             }
         }
     }
