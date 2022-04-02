@@ -33,6 +33,7 @@ public class WebExceptionHandler {
 
     @ExceptionHandler(ServerException.class)
     public ResponseEntity<StatusResponse> handleServer(ServerException ex) {
+        log.error("Oops, service arose internal error");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(StatusResponse.builder().message(ex.getMessage()).status(HttpStatus.INTERNAL_SERVER_ERROR.value()).build());
     }
