@@ -31,6 +31,12 @@ public class WebExceptionHandler {
                 .body(StatusResponse.builder().message(ex.getMessage()).status(HttpStatus.FORBIDDEN.value()).build());
     }
 
+    @ExceptionHandler(ServerException.class)
+    public ResponseEntity<StatusResponse> handleServer(ServerException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(StatusResponse.builder().message(ex.getMessage()).status(HttpStatus.INTERNAL_SERVER_ERROR.value()).build());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<StatusResponse> handleOther(Exception ex) {
         log.error("Oops, internal error occurred", ex);
