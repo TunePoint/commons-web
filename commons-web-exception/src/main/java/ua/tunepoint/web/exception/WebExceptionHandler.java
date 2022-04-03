@@ -3,6 +3,7 @@ package ua.tunepoint.web.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ua.tunepoint.web.model.StatusResponse;
@@ -29,6 +30,13 @@ public class WebExceptionHandler {
     public ResponseEntity<StatusResponse> handleForbidden(ForbiddenException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(StatusResponse.builder().message(ex.getMessage()).status(HttpStatus.FORBIDDEN.value()).build());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<StatusResponse> handleAccessDenied(AccessDeniedException ex) {
+        log.warn("Unauthorized exception occurred", ex);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+             .body(StatusResponse.builder().message("Unauthorized").status(HttpStatus.UNAUTHORIZED.value()).build());
     }
 
     @ExceptionHandler(ServerException.class)
